@@ -39,6 +39,17 @@ export default function Home() {
 
   return (
     <div className="awge-container">
+      {/* TV noise video background */}
+      <video 
+        className="tv-noise-bg"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="https://assets.codepen.io/39255/old-tv-noise-loop.mp4" type="video/mp4" />
+      </video>
+
       {initialLoading ? (
         <div className="loading-screen">
           <div className="loading-text">LOADING...</div>
@@ -50,7 +61,14 @@ export default function Home() {
           <div className="scanline"></div>
           <div className="start-content">
             <h1 className="glitch-text title-text">PORTFOLIO</h1>
-            <div className="press-start blink" onClick={handleStart}>PRESS START</div>
+            <div className="press-start blink" onClick={handleStart}>
+              <img 
+                src="https://win98icons.alexmeub.com/icons/png/windows-0.png"
+                alt=""
+                className="win98-icon"
+              />
+              START
+            </div>
           </div>
         </div>
       ) : (
@@ -60,11 +78,13 @@ export default function Home() {
           <div className="scanline"></div>
           
           <header className="awge-header">
-            <div className="glitch-text" data-text="PORTFOLIO">PORTFOLIO</div>
-            <div className="header-right">
-              <div className="datetime">
-                {new Date().toLocaleDateString()} - {new Date().toLocaleTimeString()}
-              </div>
+            <div className="glitch-text" data-text="PORTFOLIO">
+              <img 
+                src="https://win98icons.alexmeub.com/icons/png/computer-3.png"
+                alt=""
+                className="win98-icon"
+              />
+              PORTFOLIO
             </div>
           </header>
           
@@ -72,35 +92,88 @@ export default function Home() {
           <div className="esc-button" onClick={() => {
             setIsLoaded(false);
             setShowStartScreen(true);
-          }}>ESC</div>
+          }}>
+            <img 
+              src="https://win98icons.alexmeub.com/icons/png/msie1-3.png"
+              alt=""
+              className="win98-icon small"
+            />
+            ESC
+          </div>
           
           <main className="awge-content">
             <div className="menu-grid">
               <div className="menu-item">
                 <span className="menu-number">01.</span>
-                <span className="menu-title">ABOUT</span>
+                <span className="menu-title">
+                  <img 
+                    src="https://win98icons.alexmeub.com/icons/png/mycomp-3.png" 
+                    alt=""
+                    className="win98-icon"
+                  />
+                  ABOUT
+                </span>
               </div>
               <div className="menu-item">
                 <span className="menu-number">02.</span>
-                <span className="menu-title">PROJECTS</span>
+                <span className="menu-title">
+                  <img 
+                    src="https://win98icons.alexmeub.com/icons/png/briefcase-0.png" 
+                    alt=""
+                    className="win98-icon"
+                  />
+                  PROJECTS
+                </span>
               </div>
               <div className="menu-item">
                 <span className="menu-number">03.</span>
-                <span className="menu-title">SKILLS</span>
+                <span className="menu-title">
+                  <img 
+                    src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png" 
+                    alt=""
+                    className="win98-icon"
+                  />
+                  SKILLS
+                </span>
               </div>
               <div className="menu-item">
                 <span className="menu-number">04.</span>
-                <span className="menu-title">CONTACT</span>
+                <span className="menu-title">
+                  <img 
+                    src="https://win98icons.alexmeub.com/icons/png/dial-0.png" 
+                    alt=""
+                    className="win98-icon"
+                  />
+                  CONTACT
+                </span>
               </div>
               <div className="menu-item">
                 <span className="menu-number">05.</span>
-                <span className="menu-title">RESUME</span>
+                <span className="menu-title">
+                  <img 
+                    src="https://win98icons.alexmeub.com/icons/png/notepad-1.png" 
+                    alt=""
+                    className="win98-icon"
+                  />
+                  RESUME
+                </span>
               </div>
             </div>
           </main>
           
           <footer className="awge-footer">
-            <div className="copyright">© {new Date().getFullYear()} PORTFOLIO - ALL RIGHTS RESERVED</div>
+            <div className="copyright">
+              <img 
+                src="https://win98icons.alexmeub.com/icons/png/world-0.png" 
+                alt=""
+                className="win98-icon small"
+              />
+              © {new Date().getFullYear()} PORTFOLIO - ALL RIGHTS RESERVED
+            </div>
+            
+            <div className="datetime">
+              {new Date().toLocaleDateString()} - {new Date().toLocaleTimeString()}
+            </div>
           </footer>
         </>
       )}
@@ -221,6 +294,9 @@ export default function Home() {
                       inset 0 0 0 2px #000;
           transition: all 0.1s steps(2);
           transform: scale(1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         
         .press-start:hover {
@@ -260,6 +336,8 @@ export default function Home() {
                       0 0 0 4px #fff,
                       inset 0 0 0 1px #000;
           transition: all 0.1s steps(2);
+          display: flex;
+          align-items: center;
         }
         
         .esc-button:hover {
@@ -307,6 +385,20 @@ export default function Home() {
           pointer-events: none;
         }
         
+        .tv-noise-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+          opacity: 0.08; /* Subtle effect that doesn't overwhelm content */
+          pointer-events: none;
+          filter: contrast(1.2) brightness(0.8);
+          mix-blend-mode: hard-light;
+        }
+        
         .awge-header {
           position: fixed;
           top: 0;
@@ -326,11 +418,8 @@ export default function Home() {
           letter-spacing: 4px;
           position: relative;
           text-transform: uppercase;
-        }
-        
-        .header-right {
-          font-size: 14px;
-          opacity: 0.7;
+          display: flex;
+          align-items: center;
         }
         
         .awge-content {
@@ -377,6 +466,8 @@ export default function Home() {
           letter-spacing: 3px;
           text-transform: uppercase;
           text-shadow: 2px 2px 0 #000;
+          display: flex;
+          align-items: center;
         }
         
         .awge-footer {
@@ -389,6 +480,33 @@ export default function Home() {
           opacity: 0.5;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
           z-index: 5;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .copyright {
+          display: flex;
+          align-items: center;
+        }
+        
+        .datetime {
+          font-size: 14px;
+          opacity: 0.7;
+        }
+        
+        .win98-icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+          image-rendering: pixelated;
+          vertical-align: middle;
+        }
+        
+        .win98-icon.small {
+          width: 16px;
+          height: 16px;
+          margin-right: 5px;
         }
         
         @keyframes blink {
@@ -419,6 +537,13 @@ export default function Home() {
           }
         }
         
+        /* Add Windows 98 border style */
+        .win98-border {
+          border: 2px solid;
+          border-color: #fff #888 #888 #fff;
+          box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #888;
+        }
+        
         /* Add pixel effect to text */
         .pixel-effect {
           image-rendering: pixelated;
@@ -430,6 +555,9 @@ export default function Home() {
       
       {/* External font link */}
       <link href="https://fonts.cdnfonts.com/css/nasalization" rel="stylesheet" />
+      
+      {/* Windows 98 icons CDN */}
+      <link rel="preload" href="https://win98icons.alexmeub.com/icons/png/windows-0.png" as="image" />
     </div>
   );
 }
