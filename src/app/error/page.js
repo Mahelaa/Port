@@ -73,7 +73,7 @@ export default function ErrorPage() {
           
           <p>Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</p>
           
-          <p className="easter-egg glitch-text-fast">CONGRATULATIONS! YOU DISCOVERED THE HIDDEN EASTER EGG! Redirecting in <span className="countdown">{countdown}</span> seconds...</p>
+          <p className="easter-egg glitch-text-fast">CONGRATULATIONS! YOU DISCOVERED ONE OF THE HIDDEN EASTER EGGS! Redirecting in <span className="countdown">{countdown}</span> seconds...</p>
           
           <p>If problems continue, disable or remove any newly installed hardware or software. Disable BIOS memory options such as caching or shadowing. If you need to use safe mode to remove or disable components, restart your computer, press F8 to select Advanced Startup Options, and then select Safe Mode.</p>
           

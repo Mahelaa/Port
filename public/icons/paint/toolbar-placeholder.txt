@@ -1,0 +1,4 @@
+/* MS Paint Toolbar Image
+This is a placeholder comment for where we'll place the toolbar image.
+We need to create or find an authentic MS Paint toolbar image.
+*/
