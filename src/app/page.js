@@ -153,7 +153,7 @@ export default function Home() {
     switch(activeSkillTab) {
       case 0: return contentData.skills?.frontend || [];
       case 1: return contentData.skills?.backend || [];
-      case 2: return contentData.skills?.tools || [];
+      case 2: return contentData.skills?.technologies || [];
       default: return [];
     }
   }, [activeSkillTab]);
@@ -181,6 +181,8 @@ export default function Home() {
   if (isMobile) {
     return (
       <div className="gameboy-container">
+        {/* Add favicon */}
+        <link rel="icon" href="/favicon.png" />
         <div className="gameboy-body">
           <div className="gameboy-screen-area">
             <div className="gameboy-screen-border">
@@ -322,6 +324,7 @@ export default function Home() {
   return (
     <div className="win98-desktop">
       {/* Preload critical resources */}
+      <link rel="icon" href="/favicon.png" />
       <link rel="preload" href="https://fonts.cdnfonts.com/s/36671/nasalization-rg.woff" as="font" type="font/woff" crossOrigin="anonymous" />
       <link rel="preload" href={getIconSrc('windows-0.png')} as="image" />
       
@@ -657,7 +660,7 @@ export default function Home() {
           
           {/* Windows Media Player Modal */}
           {showMediaPlayerModal && (
-            <div className="media-player-container" style={{ right: '450px', top: '100px', position: 'absolute', zIndex: 995 }}>
+            <div className="media-player-container" style={{ left: '30px', top: '30px', position: 'absolute', zIndex: 995 }}>
               <div className="win98-window media-player-window" style={{ width: '280px', height: '350px', background: '#c0c0c0' }}>
                 <div className="win98-title-bar">
                   <div className="win98-title">
@@ -901,7 +904,19 @@ export default function Home() {
           {/* Internet Explorer Modal */}
           {showIEModal && (
             <div className="ie-browser-container" style={{ right: '20px', top: '250px', position: 'absolute', zIndex: 985 }}>
-              <div className="ie-browser-window">
+              <div className="ie-browser-window" style={{
+                width: '600px',
+                height: '450px',
+                display: 'flex',
+                flexDirection: 'column',
+                border: '2px solid #dfdfdf',
+                borderRight: '2px solid #7f7f7f',
+                borderBottom: '2px solid #7f7f7f',
+                boxShadow: 'inset 1px 1px 0px 1px #ffffff, inset -1px -1px 0px 1px #0a0a0a',
+                background: '#c0c0c0',
+                overflow: 'hidden'
+              }}>
+                {/* Title bar remains the same */}
                 <div className="ie-title-bar">
                   <div className="ie-title">
                     <img src={getIconSrc(contentData.internetExplorer.icon)} alt="" className="ie-icon small" />
@@ -914,13 +929,15 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="ie-menu-bar">
+                {/* Menu bar with flex-shrink to prevent growing */}
+                <div className="ie-menu-bar" style={{ flexShrink: 0 }}>
                   {contentData.internetExplorer.menuItems.map((item, index) => (
                     <span key={index} className="ie-menu-item">{item}</span>
                   ))}
                 </div>
                 
-                <div className="ie-toolbar">
+                {/* Toolbar with flex-shrink */}
+                <div className="ie-toolbar" style={{ flexShrink: 0 }}>
                   <div className="ie-toolbar-left">
                     {contentData.internetExplorer.toolbarButtons.map((button, index) => (
                       <button key={index} className="ie-toolbar-button">
@@ -931,37 +948,53 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="ie-address-bar">
+                {/* Address bar with flex-shrink */}
+                <div className="ie-address-bar" style={{ flexShrink: 0 }}>
                   <span className="ie-address-label">{contentData.internetExplorer.addressLabel}</span>
                   <div className="ie-address-input">
                     <input type="text" value="https://github.com/mahelaa" readOnly className="ie-url-input" />
                   </div>
                 </div>
                 
-                <div className="ie-content-area">
-                  <div className="retro-github-page">
+                {/* Content area with flex: 1 to take available space and overflow handling */}
+                <div className="ie-content-area" style={{
+                  flex: 1,
+                  overflow: 'hidden',
+                  position: 'relative'
+                }}>
+                  <div className="retro-github-page" style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'hidden'
+                  }}>
                     <div className="retro-github-header" style={{
                       background: '#c0c0c0',
                       padding: '4px 8px',
                       borderBottom: '1px solid #808080',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '6px'
+                      gap: '6px',
+                      flexShrink: 0
                     }}>
                       <div style={{ fontWeight: 'bold', fontSize: '14px' }}>GitHub - Windows 98 Edition</div>
                     </div>
                     
                     <div className="retro-github-body" style={{
                       display: 'flex',
-                      height: 'calc(100% - 25px)',
+                      flex: 1,
+                      overflow: 'hidden',
                       background: '#FFFFFF'
                     }}>
+                      {/* Sidebar with fixed width and scrollable */}
                       <div className="retro-github-sidebar" style={{
-                        width: '150px',
+                        width: '140px',
+                        flexShrink: 0,
                         background: '#efefef',
                         borderRight: '1px solid #c0c0c0',
-                        padding: '10px',
-                        fontSize: '11px'
+                        padding: '8px',
+                        fontSize: '11px',
+                        overflow: 'auto'
                       }}>
                         <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Navigation</div>
                         <ul style={{ 
@@ -988,9 +1021,10 @@ export default function Home() {
                         </ul>
                       </div>
                       
+                      {/* Main content area with scrolling */}
                       <div className="retro-github-content" style={{
                         flex: '1',
-                        padding: '10px',
+                        padding: '8px',
                         fontSize: '11px',
                         overflow: 'auto'
                       }}>
@@ -1021,39 +1055,53 @@ export default function Home() {
                         
                         <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Popular Repositories</div>
                         
-                        {contentData.projects.items.map((project, index) => (
-                          <div key={index} style={{ 
-                            border: '1px solid #c0c0c0',
-                            padding: '8px',
-                            marginBottom: '8px'
-                          }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <a href={project.githubLink} style={{ color: '#0000EE', fontWeight: 'bold', textDecoration: 'none' }}>
-                                {project.title}
-                              </a>
-                              <span style={{ color: '#666', fontSize: '10px' }}>Updated yesterday</span>
-                            </div>
-                            <p style={{ margin: '5px 0', fontSize: '10px' }}>{project.description}</p>
-                            <div style={{ 
-                              display: 'flex', 
-                              fontSize: '10px',
-                              color: '#666',
-                              marginTop: '5px'
+                        {/* Project list in a scrollable container */}
+                        <div style={{ height: 'calc(100% - 130px)', overflow: 'auto' }}>
+                          {contentData.projects.items.map((project, index) => (
+                            <div key={index} style={{ 
+                              border: '1px solid #c0c0c0',
+                              padding: '8px',
+                              marginBottom: '8px'
                             }}>
-                              <span style={{ marginRight: '10px' }}>⭐ 15</span>
-                              <span style={{ marginRight: '10px' }}>🔄 3</span>
-                              <span>{project.technologies[0]}</span>
+                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <a href={project.githubLink} style={{ color: '#0000EE', fontWeight: 'bold', textDecoration: 'none' }}>
+                                  {project.title}
+                                </a>
+                                <span style={{ color: '#666', fontSize: '10px' }}>Updated yesterday</span>
+                              </div>
+                              <p style={{ margin: '5px 0', fontSize: '10px' }}>{project.description}</p>
+                              <div style={{ 
+                                display: 'flex', 
+                                fontSize: '10px',
+                                color: '#666',
+                                marginTop: '5px'
+                              }}>
+                                <span style={{ marginRight: '10px' }}>⭐ 15</span>
+                                <span style={{ marginRight: '10px' }}>🔄 3</span>
+                                <span>{project.technologies[0]}</span>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="ie-status-bar">
-                  <div className="ie-status-left">Done</div>
-                  <div className="ie-status-right">Internet zone</div>
+                {/* Status bar with flex-shrink */}
+                <div className="ie-status-bar" style={{
+                  flexShrink: 0,
+                  height: '20px',
+                  borderTop: '1px solid #808080',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0 8px',
+                  alignItems: 'center',
+                  background: '#c0c0c0',
+                  fontSize: '11px'
+                }}>
+                  <span>Done</span>
+                  <span>Internet zone</span>
                 </div>
               </div>
             </div>

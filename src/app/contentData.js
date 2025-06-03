@@ -39,27 +39,28 @@ const contentData = {
   skills: {
     title: "My Skills",
     frontend: [
-      { name: "HTML5/CSS3", level: 95 },
+      { name: "HTML5/CSS3", level: 100 },
       { name: "JavaScript", level: 90 },
       { name: "React", level: 85 },
       { name: "Next.js", level: 80 },
       { name: "UI/UX Design", level: 75 }
     ],
     backend: [
+      { name: "Python", level: 96},
       { name: "Node.js", level: 88 },
       { name: "Express", level: 85 },
-      { name: "MongoDB", level: 80 },
       { name: "SQL", level: 75 },
-      { name: "GraphQL", level: 70 }
+      { name: "Firebase", level: 70 },
+      { name: "AWS", level: 70 }
     ],
-    tools: [
-      { name: "Git", level: 92 },
-      { name: "Docker", level: 78 },
-      { name: "AWS", level: 75 },
-      { name: "Jest", level: 85 },
-      { name: "Webpack", level: 80 }
+    technologies: [
+      { name: "Machine Learning and A.I", level: 92 },
+      { name: "Scaling", level: 78 },
+      { name: "Cloud Computing", level: 75 },
+      { name: "API Development", level:75},
+      { name: "Blockchain", level:80 }
     ],
-    categories: ["Frontend", "Backend", "Tools"]
+    categories: ["Frontend", "Backend", "Technologies"],
   },
   contact: {
     title: "Contact Me",
@@ -110,8 +111,8 @@ const contentData = {
     { name: 'Skills', icon: 'application_lightning-0.png', action: 'skills' },
     { name: 'Contact', icon: 'outlook_express-4.png', action: 'contact' },
     { name: 'Resume', icon: 'notepad-1.png', action: 'resume' },
-    { name: 'Recycle Bin', icon: 'recycle_bin_empty-4.png', action: null },
-    { name: 'Internet Explorer', icon: 'internet_explorer-0.png', action: 'ie' }
+    { name: 'Internet Explorer', icon: 'internet_explorer-0.png', action: 'ie' },
+    { name: 'Recycle Bin', icon: 'recycle_bin_empty-4.png', action: null }
   ],
 
   // Loading and start screen content
