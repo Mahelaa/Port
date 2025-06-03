@@ -15,17 +15,17 @@ const contentData = {
     items: [
       {
         title: "Portfolio Website",
-        description: "A creative portfolio built with Next.js featuring interactive retro UI elements and modern web technologies.",
+        description: "The current demonstration. A nostalgic Windows 98 themed portfolio showcasing my skills and projects. Will be updated monthly",
         technologies: ["Next.js", "React", "CSS"],
         icon: "file_html-0.png",
-        githubLink: "https://github.com/mahelaa/portfolio-website"
+        githubLink: "https://github.com/Mahelaa/Port"
       },
       {
-        title: "E-commerce Platform",
-        description: "Full-featured online store with product catalog, shopping cart, and secure checkout functionality.",
-        technologies: ["React", "Node.js", "MongoDB"],
+        title: "Esports Data Census",
+        description: "My data collection and analysis tool for esports events.This would breakdown data from esports events in Canada, providing insights into player demographics, game statistics, and more.",
+        technologies: ["Python", "PowerBI", "SQL"],
         icon: "shopping-0.png",
-        githubLink: "https://github.com/mahelaa/ecommerce-platform"
+        githubLink: "https://github.com/Mahelaa/Esports-Canada-Census"
       },
       {
         title: "Weather Application",
@@ -80,7 +80,7 @@ const contentData = {
   },
   resume: {
     title: "Download Resume",
-    filename: "Resume_Shane_Developer.pdf",
+    filename: "Resume_Shane.pdf",
     fileDetails: [
       "File type: Adobe PDF Document",
       "Size: 1.2 MB",

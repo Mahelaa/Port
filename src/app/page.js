@@ -178,6 +178,63 @@ export default function Home() {
     e.target.media = 'all';
   }, []);
 
+  // Add these states for resume modal animation
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadStarted, setDownloadStarted] = useState(false);
+  const [downloadComplete, setDownloadComplete] = useState(false);
+  
+  // Store the animation function in a ref to avoid dependency issues
+  const startDownloadAnimationRef = useRef();
+
+  // Enhanced download animation with more realistic behavior
+  const startDownloadAnimation = useCallback(() => {
+    setDownloadStarted(true);
+    setDownloadProgress(0);
+    
+    // Initial delay to simulate connection
+    setTimeout(() => {
+      // Variable speed progress to simulate real download
+      let speed = 2;
+      const interval = setInterval(() => {
+        setDownloadProgress(prev => {
+          // Random fluctuations in download speed
+          if (prev > 85) speed = 0.5;
+          else if (prev > 60) speed = 1;
+          else if (Math.random() > 0.8) speed = speed * (Math.random() + 0.5);
+          
+          const increment = Math.random() * speed;
+          
+          if (prev >= 100) {
+            clearInterval(interval);
+            setDownloadComplete(true);
+            return 100;
+          }
+          return Math.min(prev + increment, 100);
+        });
+      }, 100);
+      
+      return () => clearInterval(interval);
+    }, 500);
+  }, []);
+  
+  // Store the function in ref after definition
+  useEffect(() => {
+    startDownloadAnimationRef.current = startDownloadAnimation;
+  }, [startDownloadAnimation]);
+
+  // Modified effect to auto-start download animation when resume modal opens
+  useEffect(() => {
+    if (modalStates.resume) {
+      // Start the animation when the modal opens using the ref
+      startDownloadAnimationRef.current();
+    } else {
+      // Reset state when the modal closes
+      setDownloadStarted(false);
+      setDownloadComplete(false);
+      setDownloadProgress(0);
+    }
+  }, [modalStates.resume]); // Remove startDownloadAnimation from dependencies
+
   if (isMobile) {
     return (
       <div className="gameboy-container">
@@ -1139,12 +1196,84 @@ export default function Home() {
         </>
       )}
 
+      {/* Style block with animations */}
+      <style jsx>{`
+        @keyframes modalAppear {
+          from { transform: scale(0.8); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes modalSlideDown {
+          from { transform: translateY(-20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes modalSlideUp {
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes modalSlideRight {
+          from { transform: translateX(-20px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes modalBounce {
+          0% { transform: scale(0.5); opacity: 0; }
+          70% { transform: scale(1.05); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes ieLoading {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(100% + 200px) 0; }
+        }
+        
+        .win98-progress-fill.complete {
+          animation: progressComplete 1.2s ease-in-out;
+          box-shadow: 0 0 5px #00ff00;
+        }
+        
+        /* Modal animations */
+        .win98-modal.about-modal {
+          animation: modalBounce 0.4s ease-out;
+        }
+        
+        .win98-modal.win98-skills-modal {
+          animation: modalSlideDown 0.3s ease-out;
+        }
+        
+        .win98-modal.win98-projects-modal {
+          animation: modalSlideUp 0.3s ease-out;
+        }
+        
+        .win98-modal.win98-contact-modal {
+          animation: modalSlideRight 0.3s ease-out;
+        }
+        
+        .ie-browser-window {
+          animation: modalAppear 0.4s ease-out;
+        }
+        
+        .ie-content-area::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(to right, transparent, #0080ff 50%, transparent);
+          opacity: 0;
+          animation: ieLoading 2s ease-in-out forwards;
+        }
+      `}</style>
+
       {!isMobile && modalStates.about && (
         <div className="win98-modal-overlay">
-          <div className="win98-modal">
+          <div className="win98-modal about-modal">
             <WindowHeader 
               title={contentData.about.title} 
-              icon="user-4.png" 
+              icon="user-0.png" // Changed from "user-4.png" to "user-0.png"
               onClose={() => toggleModal('about', false)} 
             />
             <div className="win98-modal-content">              <img
@@ -1283,7 +1412,7 @@ export default function Home() {
                   {contentData.contact.methods.map((method, index) => (
                     <div className="win98-contact-method" key={index}>
                       <img
-                        src={`https://win98icons.alexmeub.com/icons/png/${method.icon}`}
+                        src={getIconSrc(method.icon)} // Changed from direct URL to getIconSrc()
                         alt={method.label}
                         className="win98-contact-icon"
                       />
@@ -1300,7 +1429,7 @@ export default function Home() {
                       {contentData.contact.social.icons.map((social, index) => (
                         <img 
                           key={index}
-                          src={`https://win98icons.alexmeub.com/icons/png/${social.icon}`} 
+                          src={getIconSrc(social.icon)} // Changed from direct URL to getIconSrc()
                           alt={social.name} 
                           className="win98-social-icon" 
                         />
@@ -1319,18 +1448,23 @@ export default function Home() {
 
       {!isMobile && modalStates.resume && (
         <div className="win98-modal-overlay">
-          <div className="win98-modal win98-download-modal">
+          <div className="win98-modal win98-download-modal" style={{
+            animation: "modalAppear 0.3s ease-out"
+          }}>
             <WindowHeader 
               title={contentData.resume.title} 
-              icon="file_download-0.png" 
+              icon="notepad-1.png" // Using a known working icon from desktop icons
               onClose={() => toggleModal('resume', false)} 
             />
             <div className="win98-modal-content">
               <div className="win98-download-container">
                 <img 
-                  src="https://win98icons.alexmeub.com/icons/png/document_gear-0.png"
+                  src={getIconSrc("notepad-1.png")} // Using getIconSrc for consistency
                   alt="Resume document"
                   className="win98-download-icon-large"
+                  style={{ 
+                    animation: downloadStarted ? "iconPulse 1s infinite alternate" : "none" 
+                  }}
                 />
                 
                 <div className="win98-download-info">
@@ -1342,27 +1476,62 @@ export default function Home() {
                   </div>
                   
                   <div className="win98-download-progress">
-                    <div className="win98-progress-label">Download Progress:</div>
-                    <div className="win98-progress-bar">
-                      <div className="win98-progress-fill"></div>
+                    <div className="win98-progress-label">
+                      {downloadStarted 
+                        ? `Download Progress: ${Math.min(Math.round(downloadProgress), 100)}%` 
+                        : "Download Progress:"}
                     </div>
-                  </div>
-                  
-                  <div className="win98-download-message">
-                    <p>Would you like to download this file?</p>
+                    <div className="win98-progress-bar">
+                      <div 
+                        className={`win98-progress-fill ${downloadStarted && !downloadComplete ? 'downloading' : ''} ${downloadComplete ? 'complete' : ''}`}
+                        style={{ 
+                          width: downloadStarted ? `${Math.min(downloadProgress, 100)}%` : '0%',
+                          transition: downloadComplete ? 'all 0.5s ease-out' : 'width 0.2s linear',
+                          background: downloadComplete 
+                            ? 'linear-gradient(to right, #00A000, #00E000)' 
+                            : 'linear-gradient(to right, #0000A0, #0066FF)'
+                        }}
+                      ></div>
+                    </div>
+                    
+                    <div className="win98-download-message">
+                      <p style={{ animation: downloadStarted ? "blink 1s infinite" : "none" }}>
+                        {!downloadStarted 
+                          ? "Would you like to download this file?" 
+                          : downloadComplete 
+                            ? "Download complete. Click 'Open' to view the file." 
+                            : "Downloading file..."}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="win98-modal-footer">
-              <a 
-                href="/resume.pdf" 
-                download={contentData.resume.filename} 
-                className="win98-button-large win98-download-button"
-              >
-                Download Now
-              </a>
-              <button className="win98-button-large" onClick={() => toggleModal('resume', false)}>Cancel</button>
+              {!downloadStarted ? (
+                <>
+                  <button 
+                    className="win98-button-large"
+                    onClick={startDownloadAnimation}
+                  >
+                    Download Now
+                  </button>
+                  <button className="win98-button-large" onClick={() => toggleModal('resume', false)}>Cancel</button>
+                </>
+              ) : downloadComplete ? (
+                <>
+                  <a 
+                    href="/resume.pdf" 
+                    download={contentData.resume.filename} 
+                    className="win98-button-large"
+                  >
+                    Open
+                  </a>
+                  <button className="win98-button-large" onClick={() => toggleModal('resume', false)}>Close</button>
+                </>
+              ) : (
+                <button className="win98-button-large" disabled>Downloading...</button>
+              )}
             </div>
           </div>
         </div>
@@ -1429,6 +1598,76 @@ export default function Home() {
         media="print" 
         onLoad={handleFontLoad}
       />
+      <style jsx>{`
+        @keyframes modalAppear {
+          from { transform: scale(0.8); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes modalSlideDown {
+          from { transform: translateY(-20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes modalSlideUp {
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes modalSlideRight {
+          from { transform: translateX(-20px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes modalBounce {
+          0% { transform: scale(0.5); opacity: 0; }
+          70% { transform: scale(1.05); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes ieLoading {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(100% + 200px) 0; }
+        }
+        
+        .win98-progress-fill.complete {
+          animation: progressComplete 1.2s ease-in-out;
+          box-shadow: 0 0 5px #00ff00;
+        }
+        
+        /* Modal animations */
+        .win98-modal.about-modal {
+          animation: modalBounce 0.4s ease-out;
+        }
+        
+        .win98-modal.win98-skills-modal {
+          animation: modalSlideDown 0.3s ease-out;
+        }
+        
+        .win98-modal.win98-projects-modal {
+          animation: modalSlideUp 0.3s ease-out;
+        }
+        
+        .win98-modal.win98-contact-modal {
+          animation: modalSlideRight 0.3s ease-out;
+        }
+        
+        .ie-browser-window {
+          animation: modalAppear 0.4s ease-out;
+        }
+        
+        .ie-content-area::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(to right, transparent, #0080ff 50%, transparent);
+          opacity: 0;
+          animation: ieLoading 2s ease-in-out forwards;
+        }
+      `}</style>
     </div>
   );
 }
